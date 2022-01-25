@@ -115,6 +115,7 @@ export default function PaginaInicial() {
               </Text>
               <TextField
                 value={username} onChange={validUsername}
+                placeholder='username do github'
                 fullWidth
                 textFieldColors={{
                   neutral: {

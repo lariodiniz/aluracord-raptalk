@@ -49,4 +49,6 @@ A imagem de usuario padrão da pagina inicial foi adquirida na [pixabay](https:/
 
 A imagem de fundo da pagina 404 foi adquirida na [pixabay](https://pixabay.com).
 
+---
+
 Feito por Lário Diniz [Entre em contato!](https://www.linkedin.com/in/lariodiniz/)
