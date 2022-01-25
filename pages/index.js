@@ -1,34 +1,9 @@
-import { Box, Button, Text, TextField, Image } from '@skynexui/components';
+import React from 'react'
+import { useRouter } from 'next/router';
+import { Box, Button, Text, TextField, Image, Icon  } from '@skynexui/components';
 import appConfig from '../config.json';
 
-function GlobalStyle(){
-    return (
-        <style global jsx>{`
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        list-style: none;
-      }
-      body {
-        font-family: 'Open Sans', sans-serif;
-      }
-      /* App fit Height */ 
-      html, body, #__next {
-        min-height: 100vh;
-        display: flex;
-        flex: 1;
-      }
-      #__next {
-        flex: 1;
-      }
-      #__next > * {
-        flex: 1;
-      }
-      /* ./App fit Height */ 
-    `}</style>
-    )
-}
+
 
 //Componente React
 function Titulo(props){
@@ -49,11 +24,59 @@ function Titulo(props){
 }
 
 export default function PaginaInicial() {
-    const username = 'lariodiniz';
-  
+
+    const GITHUB = 'https://github.com/';
+    const GITHUB_API = 'https://api.github.com/users/';
+    const STANDERT_USER = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+    
+    const [username, setUsername] = React.useState('');
+    const [user, setUser] = React.useState({seguidores:0, repositorios: 0});
+    const [image, setImage] = React.useState(STANDERT_USER);
+    const roteamento = useRouter();
+
+    const validUsername = (event)=>{
+      let valor = event.target.value;
+     
+      if (valor.length > 2){
+         setImage(`${GITHUB}${valor}.png`)
+         fetch(`${GITHUB_API}${valor}`, { 
+          method: 'GET'
+        }).then(async (retorno)=>{
+          if (retorno.status === 200){
+            let dados = await retorno.json()
+            setUser({seguidores:dados.followers, repositorios: dados.public_repos})
+          }
+        })
+      }
+      else{
+        setUser({seguidores:0, repositorios: 0})
+        setImage(STANDERT_USER)
+      }
+      
+      setUsername(valor)
+      
+    }
+
+    const changePage = async (event)=>{
+      event.preventDefault(); 
+
+      const retorno = await fetch(`${GITHUB_API}${username}`, { 
+        method: 'GET'
+      })
+
+      if (retorno.status === 200){
+        let user = await retorno.json()
+        roteamento.push('/chat')
+      }
+      else{
+        alert('Usuário não existe')
+      }
+      
+    }
+
     return (
       <>
-        <GlobalStyle />
+        
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -80,6 +103,7 @@ export default function PaginaInicial() {
             {/* Formulário */}
             <Box
               as="form"
+              onSubmit={changePage}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -89,8 +113,8 @@ export default function PaginaInicial() {
               <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
                 {appConfig.name}
               </Text>
-  
               <TextField
+                value={username} onChange={validUsername}
                 fullWidth
                 textFieldColors={{
                   neutral: {
@@ -103,6 +127,7 @@ export default function PaginaInicial() {
               />
               <Button
                 type='submit'
+                disabled={username.length < 3}
                 label='Entrar'
                 fullWidth
                 buttonColors={{
@@ -137,7 +162,7 @@ export default function PaginaInicial() {
                   borderRadius: '50%',
                   marginBottom: '16px',
                 }}
-                src={`https://github.com/${username}.png`}
+                src={image}
               />
               <Text
                 variant="body4"
@@ -150,6 +175,96 @@ export default function PaginaInicial() {
               >
                 {username}
               </Text>
+                <Box
+                styleSheet={{
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  display: 'flex',
+                  padding: '16px',
+                }}
+              >
+                
+                <Box
+                  styleSheet={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginLeft: '10px',
+                    padding: '2px',
+                    backgroundColor: appConfig.theme.colors.neutrals["000"],
+                    border: '1px solid',
+                    borderColor: appConfig.theme.colors.neutrals[999],
+                    borderRadius: '10px',
+                    minWidth: '160px'
+                  }}
+                >
+                  <Icon name={"FaCode"}
+                  styleSheet={{
+                    marginRight: '5px'
+                  }}/>
+                  <Text
+                    variant="body4"
+                    styleSheet={{
+                      color: appConfig.theme.colors.neutrals['900'],
+                      padding: '3px 10px',
+                      borderRadius: '1000px'
+                    }}
+                  >
+                    Repositórios
+                  </Text>
+                  <Text
+                    variant="body4"
+                    styleSheet={{
+                      color: appConfig.theme.colors.neutrals[200],
+                      backgroundColor: appConfig.theme.colors.neutrals[900],
+                      padding: '3px 10px',
+                      borderRadius: '1000px'
+                    }}
+                  >
+                    {user.repositorios}
+                  </Text>
+                </Box>
+                <Box
+                  styleSheet={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginLeft: '10px',
+                    padding: '2px',
+                    backgroundColor: appConfig.theme.colors.neutrals["000"],
+                    border: '1px solid',
+                    borderColor: appConfig.theme.colors.neutrals[999],
+                    borderRadius: '10px',
+                    minWidth: '160px'
+                  }}
+                >
+                  <Icon name={"FaPeopleArrows"}
+                  styleSheet={{
+                    marginRight: '2px',
+                    marginLeft: '5px',
+                    width: '16px'
+                  }}/>
+                  <Text
+                    variant="body4"
+                    styleSheet={{
+                      color: appConfig.theme.colors.neutrals['900'],
+                      padding: '3px 10px',
+                      borderRadius: '1000px'
+                    }}
+                  >
+                    Seguidores
+                  </Text>
+                  <Text
+                    variant="body4"
+                    styleSheet={{
+                      color: appConfig.theme.colors.neutrals[200],
+                      backgroundColor: appConfig.theme.colors.neutrals[900],
+                      padding: '3px 10px',
+                      borderRadius: '1000px'
+                    }}
+                  >
+                    {user.seguidores}
+                  </Text>
+                </Box>
+              </Box>
             </Box>
             {/* Photo Area */}
           </Box>

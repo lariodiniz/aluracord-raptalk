@@ -43,6 +43,8 @@ Este projeto esta sobe a licença [MIT](/LICENSE).
 
 ## Outros
 
-A imagem de fundo da pagina inicial foi adquirida na [pixabay](https://pixabay.com)
+A imagem de fundo da pagina inicial foi adquirida na [pixabay](https://pixabay.com).
+
+A imagem de usuario padrão da pagina inicial foi adquirida na [pixabay](https://pixabay.com).
 
 Feito por Lário Diniz [Entre em contato!](https://www.linkedin.com/in/lariodiniz/)

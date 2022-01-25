@@ -307,3 +307,121 @@ export default function PaginaInicial() {
 ```
 npx gitignore node
 ```
+
+## Aula 02
+
+### Use o state do react para controlar a variavel username no arquivo index.js
+
+1. Importe o React
+
+```
+import React from 'react'
+```
+
+2. use o useState para declarar a variavel
+
+```
+const [username, setUsername] = React.useState('lariodiniz');
+```
+
+3. use a variavel username e a função setUsername no campo de imput no compotent TextField que é um imput
+
+```
+  <TextField
+    value={username} onChange={function A(event){
+      let valor = event.target.value;
+      setUsername(valor)
+    } }
+    fullWidth
+    textFieldColors={{
+      neutral: {
+        textColor: appConfig.theme.colors.neutrals[200],
+        mainColor: appConfig.theme.colors.neutrals[900],
+        mainColorHighlight: appConfig.theme.colors.primary[500],
+        backgroundColor: appConfig.theme.colors.neutrals[800],
+      },
+    }}
+  />
+```
+
+### Crie a pagina chat
+
+1.  Dentro da pasta **pages** crie o arquivo **chat.js**
+2.  No arquivo **chat.js** adicione o seguinte código:
+
+```
+function PaginadoChat(){
+    return <div>Página do Chat</div>
+}
+
+export default PaginadoChat
+```
+
+### Crie compentende global no next.js
+
+1.  dentro da pasta **pages** crie o arquivo **\_app.js**
+2.  No arquivo **\_app.js** adicione o seguinte código:
+
+```
+function GlobalStyle(){
+    return (
+        <style global jsx>{`
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        list-style: none;
+      }
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+      /* App fit Height */
+      html, body, #__next {
+        min-height: 100vh;
+        display: flex;
+        flex: 1;
+      }
+      #__next {
+        flex: 1;
+      }
+      #__next > * {
+        flex: 1;
+      }
+      /* ./App fit Height */
+    `}</style>
+    )
+}
+
+export default function MyApp({ Component, pageProps}){
+    return (
+        <>
+        <GlobalStyle />
+        <Component {...pageProps} />
+        </>
+    )
+}
+```
+
+3.  No arquivo **index.js** remova a função GlobalStyle e o componente GlobalStyle:
+
+### Navegue entre as paginas index.js e chat.js
+
+1. No arquivo index.js import o useRouter do next
+
+```
+import { useRouter } from 'next/router';
+```
+
+2. No arquivo index.js crie a variável de roteamento.
+
+```
+const roteamento = useRouter();
+```
+
+3. No arquivo index.js crie a função e a função onSubmit no componente Box que é o form da pagina.
+
+```
+onSubmit={function(event){
+  event.preventDefault();
+  roteamento.push('/chat')}}
+```
