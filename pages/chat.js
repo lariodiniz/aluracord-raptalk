@@ -291,11 +291,11 @@ function MessageList({mensagens, apagar}) {
         <Box
         tag="ul"
         styleSheet={{
-            overflow: 'scroll',
+            overflowY: 'scroll',
             display: 'flex',
             flexDirection: 'column-reverse',
             flex: 1,
-            color: appConfig.theme.colors.neutrals["000"],
+            
             marginBottom: '16px',
         }}
     >
