@@ -1,8 +1,10 @@
 import React from 'react'
 import { useRouter } from 'next/router';
 import { Box, Button, Text, TextField, Image, Icon  } from '@skynexui/components';
-import appConfig from '../config.json';
 
+import { Context } from '../context'
+import appConfig from '../config.json';
+import Constantes from '../constantes'
 
 
 //Componente React
@@ -25,21 +27,21 @@ function Titulo(props){
 
 export default function PaginaInicial() {
 
-    const GITHUB = 'https://github.com/';
-    const GITHUB_API = 'https://api.github.com/users/';
-    const STANDERT_USER = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png';
+    let { login } = React.useContext(Context)
+
+
     
     const [username, setUsername] = React.useState('');
     const [user, setUser] = React.useState({seguidores:0, repositorios: 0});
-    const [image, setImage] = React.useState(STANDERT_USER);
+    const [image, setImage] = React.useState(Constantes.STANDERT_USER);
     const roteamento = useRouter();
 
     const validUsername = (event)=>{
       let valor = event.target.value;
      
       if (valor.length > 2){
-         setImage(`${GITHUB}${valor}.png`)
-         fetch(`${GITHUB_API}${valor}`, { 
+         setImage(`${Constantes.GITHUB}${valor}.png`)
+         fetch(`${Constantes.GITHUB_API}${valor}`, { 
           method: 'GET'
         }).then(async (retorno)=>{
           if (retorno.status === 200){
@@ -50,7 +52,7 @@ export default function PaginaInicial() {
       }
       else{
         setUser({seguidores:0, repositorios: 0})
-        setImage(STANDERT_USER)
+        setImage(Constantes.STANDERT_USER)
       }
       
       setUsername(valor)
@@ -60,12 +62,15 @@ export default function PaginaInicial() {
     const changePage = async (event)=>{
       event.preventDefault(); 
 
-      const retorno = await fetch(`${GITHUB_API}${username}`, { 
+      const retorno = await fetch(`${Constantes.GITHUB_API}${username}`, { 
         method: 'GET'
       })
 
       if (retorno.status === 200){
         let user = await retorno.json()
+        let log = login.value
+        log.username = username
+        login.set(log)
         roteamento.push('/chat')
       }
       else{
@@ -81,7 +86,7 @@ export default function PaginaInicial() {
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             backgroundColor: appConfig.theme.colors.primary[500],
-            backgroundImage: 'url(https://cdn.pixabay.com/photo/2016/12/17/07/32/hip-hop-1912921_960_720.jpg)',
+            backgroundImage: `url(${Constantes.BACKGROUND})`,
             backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundBlendMode: 'multiply',
           }}
         >

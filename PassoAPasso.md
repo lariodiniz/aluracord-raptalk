@@ -425,3 +425,56 @@ onSubmit={function(event){
   event.preventDefault();
   roteamento.push('/chat')}}
 ```
+
+## Aula 01
+
+### Criando a lógica da mensagem
+
+1.0 Crie a variavel mensagem com useState
+
+```
+const [mensagem, setMensagem] = React.useState('');
+```
+
+2.0 Crie a variavel lista de mensagem com useState
+
+```
+const [listaMensagem, setListaMensagem] = React.useState([]);
+```
+
+3.0 Crie a função handleNovaMensagem
+
+```
+    const handleNovaMensagem = (novaMensagem) =>{
+
+        setListaMensagem([...listaMensagem, novaMensagem])
+        setMensagem('')
+    }
+```
+
+4.0 Atualize o textBox com as duas variaveis criadas e o evento onKeyPress
+
+```
+<TextField
+                            placeholder="Insira sua mensagem aqui..."
+                            value={mensagem}
+                            onChange={(event) => setMensagem(event.target.value)}
+                            onKeyPress={(event) =>{
+                                if ((event.key === 'Enter') && (!event.shiftKey)){
+                                    event.preventDefault();
+                                    handleNovaMensagem(mensagem);
+                                }
+                            }}
+                            type="textarea"
+                            styleSheet={{
+                                width: '100%',
+                                border: '0',
+                                resize: 'none',
+                                borderRadius: '5px',
+                                padding: '6px 8px',
+                                backgroundColor: appConfig.theme.colors.neutrals[800],
+                                marginRight: '12px',
+                                color: appConfig.theme.colors.neutrals[200],
+                            }}
+                        />
+```
