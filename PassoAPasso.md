@@ -426,7 +426,7 @@ onSubmit={function(event){
   roteamento.push('/chat')}}
 ```
 
-## Aula 01
+## Aula 03
 
 ### Criando a lógica da mensagem
 
@@ -477,4 +477,44 @@ const [listaMensagem, setListaMensagem] = React.useState([]);
                                 color: appConfig.theme.colors.neutrals[200],
                             }}
                         />
+```
+
+## Aula 04
+
+### Crie o servidor e a tabela de mensagem
+
+acesse **https://supabase.com/** e crie o banco de dados.
+
+### Instale a lib da supabase
+
+- yarn:
+
+```
+yarn add @supabase/supabase-js
+```
+
+- npm:
+
+```
+npm i @supabase/supabase-js
+```
+
+### crie o client do supabase na pagina chat
+
+1. Importe a bliblioteca
+
+```
+import { createClient } from '@supabase/supabase-js'
+```
+
+2. Crie a varivabel **supabaseClient**
+
+```
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+```
+
+3. Crie a varivabel **supabaseClient**
+
+```
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 ```

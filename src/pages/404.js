@@ -1,8 +1,9 @@
 import React from 'react'
 import { Box, Image, Text } from '@skynexui/components';
-import appConfig from '../config.json';
+import appConfig from '../utils/constants.json';
+import style from '../style/style.json';
 
-export default function PaginaInicial() {
+export default function Page404() {
 
     return (
       <>
@@ -11,7 +12,7 @@ export default function PaginaInicial() {
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexDirection: 'column',
-            backgroundColor: appConfig.theme.colors.primary['050'],
+            backgroundColor: style.theme.colors.primary['050'],
             
             
           }}
@@ -20,13 +21,13 @@ export default function PaginaInicial() {
                   marginBottom: '16px',
                   height: '500px',
                 }}
-                src={'https://cdn.pixabay.com/photo/2016/05/30/14/23/detective-1424831_960_720.png'} />
+                src={appConfig.IMAGE_404} />
          <Text variant="h1" 
             styleSheet={{ 
                 marginTop: '32px', 
                 fontSize: '24px',
                 fontWeight: 600,
-                color: appConfig.theme.colors.primary['900'] }}
+                color: style.theme.colors.primary['900'] }}
         >
         404 - Page not found        
         </Text>

@@ -1,4 +1,4 @@
-import {ContextProvider} from '../context'
+import {ContextProvider} from '../contexts/context'
 
 function GlobalStyle(){
     return (
@@ -28,6 +28,8 @@ function GlobalStyle(){
     `}</style>
     )
 }
+
+
 
 export default function MyApp({ Component, pageProps}){
     return (
