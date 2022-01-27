@@ -19,26 +19,14 @@ import style from '../style/style.json';
 import GetUserInfoGithub from '../services/getUserInfoGithub'
 
 
-export const getServerSideProps = async () => {
-    const {NEXT_PUBLIC_SUPABASE_URL, SUPABASE_ANON_KEY } = process.env
-  
-    return {
-      props: {
-        SUPABASE_URL: NEXT_PUBLIC_SUPABASE_URL, 
-        SUPABASE_ANON_KEY: SUPABASE_ANON_KEY
-      }
-    }
-  }
-
-
-    
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export default function ChatPage(props) {
 
-
     let { login } = React.useContext(Context)
     const USER = login.value.username
-    const supabaseClient = createClient(props.SUPABASE_URL, props.SUPABASE_ANON_KEY)
+    const supabaseClient = createClient(supabaseUrl, supabaseAnonKey)
     const [message, setMessage] = React.useState('');
     const [messageList, setMessageList] = React.useState([]);
    
