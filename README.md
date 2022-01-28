@@ -43,9 +43,9 @@ Este projeto esta sobe a licença [MIT](/LICENSE).
 
 ## Outros
 
-A imagem de fundo da pagina inicial foi adquirida na [pixabay](https://pixabay.com).
+O Icone da aplicação foi criado por [Freepik -Flaticon](https://www.flaticon.com/br/icones-gratis/bate-papo)
 
-A imagem de usuario padrão da pagina inicial foi adquirida na [pixabay](https://pixabay.com).
+A imagem de fundo da pagina inicial foi adquirida na [pixabay](https://pixabay.com).
 
 A imagem de fundo da pagina 404 foi adquirida na [pixabay](https://pixabay.com).
 

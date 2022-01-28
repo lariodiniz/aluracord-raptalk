@@ -15,6 +15,7 @@ import appConfig from '../utils/constants.json';
 import style from '../style/style.json';
 
 
+
 export default function Index() {
 
     let { login } = React.useContext(Context);
@@ -53,7 +54,7 @@ export default function Index() {
         let log = login.value
         log.username = dados.login
         login.set(log)
-        appRouter.push('/chat')
+        appRouter.push(`/chat?username=${dados.login}`)
       }
       setSeeking(true)
       GetUserInfoGithub(username, success, setAlerts);

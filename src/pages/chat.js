@@ -1,6 +1,8 @@
 import React from 'react';
-import { Box, Text, TextField, Image, Button, Icon } from '@skynexui/components';
+import { useRouter } from 'next/router';
+import { createClient } from '@supabase/supabase-js';
 
+import { Box, Text, TextField, Image, Button, Icon } from '@skynexui/components';
 import CircularProgress  from '@mui/material/CircularProgress';
 import Popover from '@mui/material/Popover';
 import Card from '@mui/material/Card';
@@ -8,39 +10,52 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 
-import { createClient } from '@supabase/supabase-js';
 
-
-import GithubInfo from './../components/githubInfo';
 import { Context } from '../contexts/context'
 import appConfig from '../utils/constants.json';
 import style from '../style/style.json';
 import GetUserInfoGithub from '../services/getUserInfoGithub'
 
+import GithubInfo from '../components/githubInfo';
+import  ButtonSendSticker from '../components/buttonSendSticker'
+import Sticker from '../components/sticker';
+
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-export default function ChatPage(props) {
+export default function ChatPage() {
 
+    const appRouter = useRouter();
     let { login } = React.useContext(Context)
     const USER = login.value.username
+    //console.log(appRouter.query.username)
     const supabaseClient = createClient(supabaseUrl, supabaseAnonKey)
     const [message, setMessage] = React.useState('');
     const [messageList, setMessageList] = React.useState([]);
+    
    
     React.useEffect(() => {
         if (!USER){
             window.location.href ='/'
+            
         }
         else{
+            listemMesages();
             getListMessagens();
         }
       }, []);
 
     const Erase = (id)=> {
-        supabaseClient.from('mensagens').delete().match({id:id}).then(({data})=>{
-            getListMessagens();
-        });
+        supabaseClient.from('mensagens').delete().match({id:id}).then();
+    }
+
+    const listemMesages = ()=>{
+        return supabaseClient.from('mensagens')
+            .on('*', (retorno)=>{
+                getListMessagens()
+            })
+            .subscribe();
     }
 
     const getListMessagens = () =>{
@@ -70,6 +85,10 @@ export default function ChatPage(props) {
         }
     }
     
+    const onStickerClick = (stiker)=>{
+        let men = `:stiker:${stiker}`
+        handleNewMessage(men);
+    }
 
     if (!USER){
         return (<Box styleSheet={styles.view}>
@@ -102,6 +121,7 @@ export default function ChatPage(props) {
                             onClick={()=>handleNewMessage(message)}
                             type='button'
                             label='Ok'
+                            styleSheet={styles.button}
                             buttonColors={{
                             contrastColor: style.theme.colors.neutrals["000"],
                             mainColor: style.theme.colors.primary[500],
@@ -109,6 +129,10 @@ export default function ChatPage(props) {
                             mainColorStrong: style.theme.colors.primary[600],
                             }}
                         />
+                        <Box styleSheet={styles.buttonStiker}>
+                            <ButtonSendSticker onStickerClick={onStickerClick} />
+                        </Box>
+                        
                     </Box>
                 </Box>
             </Box>
@@ -191,9 +215,21 @@ function Message({message, erase}) {
                         alignItems: 'center', 
                         justifyContent: `${message.dono ? 'right': 'left'}`
                         }}>
-                        <Text styleSheet={styles.components.message.text}>
-                            {message.texto}
-                        </Text>
+                        
+                            {
+                                message.texto.startsWith(':stiker:') ?
+                                (
+                                    <Box styleSheet={styles.components.message.stiker} >
+                                        <Sticker src={message.texto.replace(':stiker:','')} />
+                                    </Box>
+                                ):
+                                (
+                                    <Text styleSheet={styles.components.message.text}>
+                                        {message.texto}
+                                    </Text>)
+                            }
+                            
+                        
                     </Box>
 
                     <Popover
@@ -227,7 +263,6 @@ const GithubPanel = ({id, name})=>{
     React.useEffect(() => {
         const getUserGitHub = async (username)=>{
             const success= (dados)=>{
-                console.log(dados)
                 setuserGitHub(dados)
               }
               GetUserInfoGithub(username, success, ()=>{});
@@ -241,6 +276,7 @@ const GithubPanel = ({id, name})=>{
             </Card>
         )
     }
+
     return (
         <Card sx={styles.components.githubPanel.card}>
         <CardMedia
@@ -329,6 +365,22 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
+    button:{
+        borderRadius: '50%',
+            padding: '0 3px 0 0',
+            minWidth: '50px',
+            minHeight: '50px',
+            fontSize: '20px',
+            marginBottom: '8px',
+            lineHeight: '0',
+            display: 'flex',
+            display: {
+                xs: 'none',
+                sm: 'flex',
+              },
+            alignItems: 'center',
+            justifyContent: 'center',
+    },
     textArea:{
         width: '100%',
         border: '0',
@@ -338,6 +390,10 @@ const styles = {
         backgroundColor: style.theme.colors.neutrals[800],
         marginRight: '12px',
         color: style.theme.colors.neutrals[200],
+    },
+    buttonStiker:{
+        width: '5%',
+        padding: '6px',
     },
     components:{
         header:{
@@ -362,7 +418,7 @@ const styles = {
                 display: 'flex',
                 flexDirection: 'column-reverse',
                 flex: 1,                
-                marginBottom: '16px',
+                marginBottom: '16px'
             }
         },
         message:{
@@ -401,6 +457,11 @@ const styles = {
             text:{
                 color: style.theme.colors.neutrals['000'],
             },
+            stiker:{
+                margin: '5px',
+                width: '150px',
+                boxShadow: '5px 5px 5px -2px rgba(62,53,69,0.7)',
+            }
         },
 
         githubPanel:{
