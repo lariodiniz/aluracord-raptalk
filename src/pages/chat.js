@@ -8,7 +8,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 
-
 import { createClient } from '@supabase/supabase-js';
 
 
@@ -17,7 +16,6 @@ import { Context } from '../contexts/context'
 import appConfig from '../utils/constants.json';
 import style from '../style/style.json';
 import GetUserInfoGithub from '../services/getUserInfoGithub'
-
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -179,7 +177,7 @@ function Message({message, erase}) {
                                 {new Date(message.created_at).toLocaleDateString()}
                             </Text>
                             {
-                                (message.dono  || message.de === 'lariodiniz') ?
+                                (message.dono) ?
                                 <Icon name={"FaEraser"}
                             onClick={()=>erase(message.id)}
                                 styleSheet={styles.components.message.iconErase}/>:
