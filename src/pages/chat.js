@@ -109,15 +109,18 @@ export default function ChatPage() {
                     }
                     
                     <Box as="form" styleSheet={styles.form}>
+                    <Box styleSheet={styles.formTextArea}>
                         <TextField
-                            placeholder="Insira sua mensagem aqui..."
-                            value={message}
-                            onChange={(event) => setMessage(event.target.value)}
-                            onKeyPress={keyPress}
-                            type="textarea"
-                            styleSheet={styles.textArea}
-                        />
-                        <Button
+                                placeholder="Insira sua mensagem aqui..."
+                                value={message}
+                                onChange={(event) => setMessage(event.target.value)}
+                                onKeyPress={keyPress}
+                                type="textarea"
+                                styleSheet={styles.textArea}
+                            />
+                    </Box>
+                    <Box styleSheet={styles.formButtonsArea}>
+                    <Button
                             onClick={()=>handleNewMessage(message)}
                             type='button'
                             label='Ok'
@@ -132,6 +135,8 @@ export default function ChatPage() {
                         <Box styleSheet={styles.buttonStiker}>
                             <ButtonSendSticker onStickerClick={onStickerClick} />
                         </Box>
+                    </Box>
+                        
                         
                     </Box>
                 </Box>
@@ -153,9 +158,12 @@ function Header({login}) {
                 <Text variant='heading5' styleSheet={styles.components.header.title}>
                     Chat
                 </Text>
-                <Image styleSheet={styles.components.header.image}
-                    src={`${appConfig.GITHUB}${login.value.username}.png`}
-                />
+                <Box styleSheet={styles.components.header.imagePanel} >
+                    <Image styleSheet={styles.components.header.image}
+                        src={`${appConfig.GITHUB}${login.value.username}.png`}
+                    />
+                </Box>
+                
                 
                 <Button
                     variant='tertiary'
@@ -345,25 +353,38 @@ const styles = {
         flex: 1,
         boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
         borderRadius: '5px',
-        backgroundColor: style.theme.colors.neutrals[700],
+        backgroundColor: style.theme.colors.neutrals[600],
         height: '100%',
         maxWidth: '95%',
         maxHeight: '95vh',
-        padding: '32px',
+        padding: '5px',
     },
     innerPanel:{
         position: 'relative',
         display: 'flex',
         flex: 1,
         height: '80%',
-        backgroundColor: style.theme.colors.neutrals[600],
+        backgroundColor: style.theme.colors.neutrals[700],
         flexDirection: 'column',
         borderRadius: '5px',
-        padding: '16px',
+        padding: '5px',
+        margin:'5px',
     },
     form: {
+        padding: '5px',
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    formTextArea: {
+        width: '100%',
+        marginRight: '5px'
+        
+    },
+    formButtonsArea: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
     button:{
         borderRadius: '50%',
@@ -374,6 +395,7 @@ const styles = {
             marginBottom: '8px',
             lineHeight: '0',
             display: 'flex',
+            marginRight: '5px',
             display: {
                 xs: 'none',
                 sm: 'flex',
@@ -392,21 +414,28 @@ const styles = {
         color: style.theme.colors.neutrals[200],
     },
     buttonStiker:{
-        width: '5%',
-        padding: '6px',
+        
     },
     components:{
         header:{
-            panel:{ width: '100%', 
-                marginBottom: '16px', 
+            panel:{ 
+                width: '100%', 
                 display: 'flex', 
                 alignItems: 'center', 
-                justifyContent: 'space-between' 
+                justifyContent: 'space-between',
+                padding: '5px'
+            },
+            imagePanel:{
+                height: '40px',
+                display: 'flex', 
+                flex: 1,
+                alignItems: 'center', 
+                justifyContent: 'center',
             },
             image:{
-                width: '40px',
-                height: '40px',
                 borderRadius: '50%',
+                height: '100%',
+                margin: '0px'
             },
             title:{
                 color: style.theme.colors.neutrals['000'],
@@ -427,7 +456,7 @@ const styles = {
                 padding: '6px',
                 marginBottom: '12px',
                 hover: {
-                    backgroundColor: style.theme.colors.neutrals[700],
+                    backgroundColor: style.theme.colors.neutrals[600],
                 }
             },
             image:{
